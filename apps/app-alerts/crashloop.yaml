@@ -3,6 +3,9 @@ kind: PrometheusRule
 metadata:
   name: crashloop
   namespace: monitoring
+  labels:
+    release: prometheus
+
 spec:
   groups:
   - name: crashloop.rules
