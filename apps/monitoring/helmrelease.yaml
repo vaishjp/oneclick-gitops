@@ -16,10 +16,10 @@ spec:
         name: prometheus-community
         namespace: flux-system
 
-  values:
-    alertmanager:
-      enabled: true
-
+ values:
+  alertmanager:
+    alertmanagerSpec:
+      configSecret: alertmanager-prometheus-kube-prometheus-alertmanager
       alertmanagerSpec:
         useExistingSecret: false
 
