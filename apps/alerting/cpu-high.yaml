@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cpu-high
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+  - name: cpu.rules
+    rules:
+    - alert: HighCPUUsage
+      expr: 100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: High CPU Usage
+        description: CPU usage is above 80%.
