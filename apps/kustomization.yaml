@@ -6,3 +6,4 @@ resources:
   - alerting
   - metrics-server
   - autoscaling
+  - cluster-autoscaler

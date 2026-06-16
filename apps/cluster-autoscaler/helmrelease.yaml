@@ -1,0 +1,28 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cluster-autoscaler
+  namespace: kube-system
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: cluster-autoscaler
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: cluster-autoscaler
+        namespace: flux-system
+  values:
+    autoDiscovery:
+      clusterName: oneclick-cluster
+    awsRegion: ap-south-1
+    rbac:
+      serviceAccount:
+        annotations: {}
+    extraArgs:
+      balance-similar-node-groups: "true"
+      skip-nodes-with-system-pods: "false"
+      scale-down-delay-after-add: 2m
+      scale-down-unneeded-time: 2m
+      expander: least-waste
