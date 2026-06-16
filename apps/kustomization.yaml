@@ -7,3 +7,4 @@ resources:
   - metrics-server
   - autoscaling
   - cluster-autoscaler
+  - ingress-nginx
