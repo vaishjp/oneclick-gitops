@@ -8,28 +8,22 @@ spec:
   chart:
     spec:
       chart: cluster-autoscaler
-      version: "9.57.0"
+      version: "*"
       sourceRef:
         kind: HelmRepository
         name: cluster-autoscaler
         namespace: flux-system
   values:
-    autoDiscovery:
-      clusterName: oneclick-cluster
-    awsRegion: ap-south-1
     cloudProvider: aws
+    autoDiscovery:
+      clusterName: "oneclick-cluster"
+    awsRegion: ap-south-1
     rbac:
-      create: true
       serviceAccount:
         create: true
         name: cluster-autoscaler
         annotations:
-          eks.amazonaws.com/role-arn: "arn:aws:iam::155734788051:role/oneclick-cluster-autoscaler-irsa"
+          eks.amazonaws.com/role-arn: "arn:aws:iam::155734788051:role/oneclick-cluster-autoscaler"
     extraArgs:
-      logtostderr: true
-      stderrthreshold: info
-      v: 4
-      skip-nodes-with-local-storage: false
-      expander: least-waste
       balance-similar-node-groups: true
       skip-nodes-with-system-pods: false
