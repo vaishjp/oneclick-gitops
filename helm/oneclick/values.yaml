@@ -17,4 +17,4 @@ backend:
 database:
   host: oneclick-postgres.c52qmcwm825v.ap-south-1.rds.amazonaws.com
   user: postgres
-  password: "YourStrongPassword123!"
+  
