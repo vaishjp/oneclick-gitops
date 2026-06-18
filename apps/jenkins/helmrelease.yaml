@@ -120,8 +120,14 @@ spec:
                   - name: shared-bin
                     mountPath: /shared-bin
                 - name: kubectl-install
-                  image: bitnami/kubectl:1.35
-                  command: ["sh", "-c", "cp /opt/bitnami/kubectl/bin/kubectl /shared-bin/kubectl"]
+                  image: curlimages/curl:8.10.1
+                  command:
+                  - sh
+                  - -c
+                  - |
+                    KVER=$(curl -sL https://dl.k8s.io/release/stable.txt)
+                    curl -sL https://dl.k8s.io/release/${KVER}/bin/linux/amd64/kubectl -o /shared-bin/kubectl
+                    chmod +x /shared-bin/kubectl
                   volumeMounts:
                   - name: shared-bin
                     mountPath: /shared-bin
