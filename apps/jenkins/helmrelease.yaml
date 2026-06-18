@@ -48,6 +48,17 @@ spec:
       JCasC:
         defaultConfig: true
         configScripts:
+          credentials: |
+            credentials:
+              system:
+                domainCredentials:
+                  - credentials:
+                      - usernamePassword:
+                          id: "github-creds"
+                          username: "vaishjp"
+                          password: "${GITHUB_TOKEN}"
+                          description: "GitHub token for GitOps repo updates"
+                          scope: GLOBAL
           seed-jobs: |
             jobs:
               - script: >
@@ -160,3 +171,9 @@ spec:
       name: jenkins
       annotations:
         eks.amazonaws.com/role-arn: "arn:aws:iam::155734788051:role/oneclick-jenkins-irsa"
+    extraEnvVars:
+      - name: GITHUB_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: jenkins-github-token
+            key: token
