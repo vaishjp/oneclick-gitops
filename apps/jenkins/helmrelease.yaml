@@ -90,6 +90,8 @@ spec:
             - name: docker
               image: docker:24-dind
               privileged: true
+              command: "sh -c"
+              args: "cp /usr/local/bin/docker /shared-bin/docker && dockerd-entrypoint.sh"
               envVars:
                 - envVar:
                     key: DOCKER_TLS_CERTDIR
@@ -98,12 +100,24 @@ spec:
               resourceRequestMemory: "1Gi"
               resourceLimitCpu: "2"
               resourceLimitMemory: "2Gi"
+              volumeMounts:
+              - mountPath: /shared-bin
+                name: shared-bin
             - name: jnlp
               image: jenkins/inbound-agent:latest
               envVars:
                 - envVar:
                     key: DOCKER_HOST
                     value: "tcp://localhost:2375"
+                - envVar:
+                    key: PATH
+                    value: "/shared-bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+              volumeMounts:
+              - mountPath: /shared-bin
+                name: shared-bin
+            volumes:
+            - name: shared-bin
+              emptyDir: {}
     persistence:
       enabled: true
       size: 8Gi
