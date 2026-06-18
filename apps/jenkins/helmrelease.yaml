@@ -86,39 +86,42 @@ spec:
           - name: dind-agent
             label: dind-agent
             serviceAccount: jenkins
-            containers:
-            - name: docker
-              image: docker:24-dind
-              privileged: true
-              command: "sh -c"
-              args: "cp /usr/local/bin/docker /shared-bin/docker && dockerd-entrypoint.sh"
-              envVars:
-                - envVar:
-                    key: DOCKER_TLS_CERTDIR
+            yaml: |
+              apiVersion: v1
+              kind: Pod
+              spec:
+                containers:
+                - name: docker
+                  image: docker:24-dind
+                  command: ["sh", "-c", "cp /usr/local/bin/docker /shared-bin/docker && dockerd-entrypoint.sh"]
+                  securityContext:
+                    privileged: true
+                  env:
+                  - name: DOCKER_TLS_CERTDIR
                     value: ""
-              resourceRequestCpu: "500m"
-              resourceRequestMemory: "1Gi"
-              resourceLimitCpu: "2"
-              resourceLimitMemory: "2Gi"
-              volumeMounts:
-              - mountPath: /shared-bin
-                name: shared-bin
-            - name: jnlp
-              image: jenkins/inbound-agent:latest
-              envVars:
-                - envVar:
-                    key: DOCKER_HOST
+                  resources:
+                    requests:
+                      cpu: "500m"
+                      memory: "1Gi"
+                    limits:
+                      cpu: "2"
+                      memory: "2Gi"
+                  volumeMounts:
+                  - name: shared-bin
+                    mountPath: /shared-bin
+                - name: jnlp
+                  image: jenkins/inbound-agent:latest
+                  env:
+                  - name: DOCKER_HOST
                     value: "tcp://localhost:2375"
-                - envVar:
-                    key: PATH
+                  - name: PATH
                     value: "/shared-bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-              volumeMounts:
-              - mountPath: /shared-bin
-                name: shared-bin
-            volumes:
-            - emptyDirVolume:
-                mountPath: /shared-bin
-              name: shared-bin
+                  volumeMounts:
+                  - name: shared-bin
+                    mountPath: /shared-bin
+                volumes:
+                - name: shared-bin
+                  emptyDir: {}
     persistence:
       enabled: true
       size: 8Gi
