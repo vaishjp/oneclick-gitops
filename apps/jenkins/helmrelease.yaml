@@ -109,7 +109,7 @@ spec:
                   - name: shared-bin
                     mountPath: /shared-bin
                 - name: aws-cli-install
-                  image: amazon/aws-cli:2
+                  image: public.ecr.aws/aws-cli/aws-cli:latest
                   command:
                   - sh
                   - -c
@@ -126,7 +126,7 @@ spec:
                   - -c
                   - |
                     KVER=$(curl -sL https://dl.k8s.io/release/stable.txt)
-                    curl -sL https://dl.k8s.io/release/${KVER}/bin/linux/amd64/kubectl -o /shared-bin/kubectl
+                    curl -sL https://dl.k8s.io/release/^${KVER}/bin/linux/amd64/kubectl -o /shared-bin/kubectl
                     chmod +x /shared-bin/kubectl
                   volumeMounts:
                   - name: shared-bin
