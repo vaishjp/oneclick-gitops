@@ -116,8 +116,9 @@ spec:
               - mountPath: /shared-bin
                 name: shared-bin
             volumes:
-            - name: shared-bin
-              emptyDir: {}
+            - emptyDirVolume:
+                mountPath: /shared-bin
+              name: shared-bin
     persistence:
       enabled: true
       size: 8Gi
