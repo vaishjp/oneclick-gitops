@@ -44,6 +44,7 @@ spec:
         - docker-workflow:latest
         - credentials-binding:latest
         - github:latest
+        - job-dsl:latest
       JCasC:
         defaultConfig: true
         configScripts:
