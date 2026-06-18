@@ -1,0 +1,113 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: jenkins
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://charts.jenkins.io
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jenkins
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: jenkins
+  namespace: jenkins
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: jenkins
+      version: "5.*"
+      sourceRef:
+        kind: HelmRepository
+        name: jenkins
+        namespace: flux-system
+  values:
+    controller:
+      resources:
+        requests:
+          cpu: 250m
+          memory: 512Mi
+        limits:
+          cpu: "1"
+          memory: 1Gi
+      installPlugins:
+        - kubernetes:latest
+        - workflow-aggregator:latest
+        - git:latest
+        - configuration-as-code:latest
+        - docker-workflow:latest
+        - credentials-binding:latest
+        - github:latest
+      JCasC:
+        defaultConfig: true
+        configScripts:
+          seed-jobs: |
+            jobs:
+              - script: >
+                  pipelineJob('oneclick-pipeline') {
+                    definition {
+                      cpsScm {
+                        scm {
+                          git {
+                            remote { url('https://github.com/vaishjp/Kobie_Hackathon_Project.git') }
+                            branch('main')
+                          }
+                        }
+                        scriptPath('Jenkinsfile')
+                      }
+                    }
+                    triggers { githubPush() }
+                  }
+              - script: >
+                  pipelineJob('drift-detection') {
+                    definition {
+                      cpsScm {
+                        scm {
+                          git {
+                            remote { url('https://github.com/vaishjp/Kobie_Hackathon_Project.git') }
+                            branch('main')
+                          }
+                        }
+                        scriptPath('Jenkinsfile.drift')
+                      }
+                    }
+                    triggers { cron('H 2 * * *') }
+                  }
+      podTemplates:
+        dind: |
+          - name: dind-agent
+            label: dind-agent
+            serviceAccount: jenkins
+            containers:
+            - name: docker
+              image: docker:24-dind
+              privileged: true
+              envVars:
+                - envVar:
+                    key: DOCKER_TLS_CERTDIR
+                    value: ""
+              resourceRequestCpu: "500m"
+              resourceRequestMemory: "1Gi"
+              resourceLimitCpu: "2"
+              resourceLimitMemory: "2Gi"
+            - name: jnlp
+              image: jenkins/inbound-agent:latest
+              envVars:
+                - envVar:
+                    key: DOCKER_HOST
+                    value: "tcp://localhost:2375"
+    persistence:
+      enabled: true
+      size: 8Gi
+      storageClass: gp2
+    serviceAccount:
+      create: true
+      name: jenkins
+      annotations:
+        eks.amazonaws.com/role-arn: "arn:aws:iam::155734788051:role/oneclick-jenkins-irsa"
