@@ -51,7 +51,7 @@ spec:
         - github:latest
         - job-dsl:latest
 
-      extraEnvVars:
+      containerEnv:
         - name: GITHUB_TOKEN
           valueFrom:
             secretKeyRef:
