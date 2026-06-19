@@ -147,8 +147,8 @@ spec:
                   - sh
                   - -c
                   - |
-                    cp /usr/local/bin/aws /shared-bin/aws || \
-                    cp /usr/local/aws-cli/v2/current/bin/aws /shared-bin/aws
+                    cp -r /usr/local/aws-cli /shared-bin/aws-cli-dist
+                    ln -s /shared-bin/aws-cli-dist/v2/current/bin/aws /shared-bin/aws
                   volumeMounts:
                   - name: shared-bin
                     mountPath: /shared-bin
