@@ -63,7 +63,11 @@ spec:
             secretKeyRef:
               name: jenkins-admin-secret
               key: password
-
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD
       JCasC:
         defaultConfig: true
 
@@ -89,7 +93,16 @@ spec:
                           password: "${GITHUB_TOKEN}"
                           description: "GitHub token for GitOps repo updates"
                           scope: GLOBAL
-
+          db-credential: |
+            credentials:
+              system:
+                domainCredentials:
+                  - credentials:
+                      - string:
+                          id: "DB_PASSWORD"
+                          secret: "${DB_PASSWORD}"
+                          description: "RDS password for drift detection"
+                          scope: GLOBAL
           seed-jobs: |
             jobs:
               - script: >

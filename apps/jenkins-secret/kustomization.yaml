@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - jenkins-github-secret.yaml
   - jenkins-admin-secret.yaml
+  - db-secret-jenkins.yaml
