@@ -62,10 +62,10 @@ spec:
             - -c
             - |
               echo "Waiting for Ollama to be ready..."
-              until curl -s http://localhost:11434/ >/dev/null 2>&1; do
+              until OLLAMA_HOST=http://localhost:11434 ollama list >/dev/null 2>&1; do
                 sleep 2
               done
-              if ! ollama list 2>/dev/null | grep -q "llama3.2:1b"; then
+              if ! OLLAMA_HOST=http://localhost:11434 ollama list 2>/dev/null | grep -q "llama3.2:1b"; then
                 echo "Model not found, pulling..."
                 OLLAMA_HOST=http://localhost:11434 ollama pull llama3.2:1b
               else
