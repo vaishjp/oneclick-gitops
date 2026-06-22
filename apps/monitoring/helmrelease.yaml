@@ -19,7 +19,7 @@ spec:
       alertmanagerSpec:
         configSecret: alertmanager-prometheus-kube-prometheus-alertmanager
     grafana:
-      envFromSecret: grafana-admin-secret
+      envFromSecret: "YourGrafanaPass123!"
       grafana.ini:
         server:
           serve_from_sub_path: true
