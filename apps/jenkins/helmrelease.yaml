@@ -149,7 +149,26 @@ spec:
                       cron('H 2 * * *')
                     }
                   }
-
+              - script: >
+                  pipelineJob('k8sgpt-analysis') {
+                    parameters {
+                      stringParam('NAMESPACE', 'default', 'Kubernetes namespace to analyze')
+                      stringParam('DEPLOYMENT', '', 'Deployment name to filter (leave empty for all)')
+                    }
+                    definition {
+                      cpsScm {
+                        scm {
+                          git {
+                            remote {
+                              url('https://github.com/vaishjp/Kobie_Hackathon_Project.git')
+                            }
+                            branch('main')
+                          }
+                        }
+                        scriptPath('Jenkinsfile.k8sgpt')
+                      }
+                    }
+                  }
     agent:
       podTemplates:
         dind: |
