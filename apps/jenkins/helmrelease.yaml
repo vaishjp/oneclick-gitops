@@ -72,7 +72,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name: jenkins-infracost-secret
-              key: key      
+              key: key  
+        - name: GRAFANA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: grafana-secret
+              key: password          
       JCasC:
         defaultConfig: true
 
@@ -108,6 +113,17 @@ spec:
                           secret: "${DB_PASSWORD}"
                           description: "RDS password for drift detection"
                           scope: GLOBAL
+
+          grafana-credential: |
+            credentials:
+              system:
+                domainCredentials:
+                  - credentials:
+                      - string:
+                          id: "GRAFANA_PASSWORD"
+                          secret: "${GRAFANA_PASSWORD}"
+                          description: "Grafana admin password"
+                          scope: GLOBAL                
           seed-jobs: |
             jobs:
               - script: >
