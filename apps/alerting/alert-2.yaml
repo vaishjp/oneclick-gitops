@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: alert-2
+  namespace: monitoring
+  labels:
+    release: prometheus
+
+spec:
+  groups:
+  - name: high-memory.rules
+    rules:
+    - alert: HighMemoryUsage
+      expr: sum(container_memory_working_set_bytes{pod=~"ml.*"}) > 500000000
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: High Memory Usage
+        description: Memory usage is high for ml.
