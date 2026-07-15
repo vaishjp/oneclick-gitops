@@ -73,11 +73,7 @@ spec:
             secretKeyRef:
               name: jenkins-infracost-secret
               key: key  
-        - name: GRAFANA_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: grafana-secret
-              key: password          
+                 
       JCasC:
         defaultConfig: true
 
