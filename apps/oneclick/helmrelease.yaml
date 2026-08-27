@@ -24,7 +24,7 @@ spec:
     frontend:
       image:
         repository: ghcr.io/vaishjp/frontend
-        tag: "9ae6cb0-1"
+        tag: "9ae6cb0-2"
       replicas: 2
       service:
         type: ClusterIP
@@ -33,7 +33,7 @@ spec:
     backend:
       image:
         repository: ghcr.io/vaishjp/backend
-        tag: "9ae6cb0-1"
+        tag: "9ae6cb0-2"
       replicas: 2
       service:
         type: ClusterIP
