@@ -131,7 +131,7 @@ spec:
                             remote {
                               url('https://github.com/vaishjp/Kobie_Hackathon_Project.git')
                             }
-                            branch('main')
+                            branch('local-demo')
                           }
                         }
                         scriptPath('Jenkinsfile')
@@ -151,7 +151,7 @@ spec:
                             remote {
                               url('https://github.com/vaishjp/Kobie_Hackathon_Project.git')
                             }
-                            branch('main')
+                            branch('local-demo')
                           }
                         }
                         scriptPath('Jenkinsfile.drift')
@@ -174,7 +174,7 @@ spec:
                             remote {
                               url('https://github.com/vaishjp/Kobie_Hackathon_Project.git')
                             }
-                            branch('main')
+                            branch('local-demo')
                           }
                         }
                         scriptPath('Jenkinsfile.k8sgpt')
@@ -208,8 +208,8 @@ spec:
                       cpu: "2"
                       memory: "2Gi"
                 - name: jnlp
-                  image: 155734788051.dkr.ecr.ap-south-1.amazonaws.com/jenkins-agent:latest
-                  imagePullPolicy: Always
+                  image: jenkins-agent:local
+                  imagePullPolicy: IfNotPresent
                   env:
                   - name: DOCKER_HOST
                     value: "tcp://localhost:2375"

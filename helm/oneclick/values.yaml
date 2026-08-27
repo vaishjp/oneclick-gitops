@@ -1,6 +1,6 @@
 frontend:
   image:
-    repository: frontend
+    repository: ghcr.io/vaishjp/frontend
     tag: "local"
   replicas: 2
   service:
@@ -9,7 +9,7 @@ frontend:
     targetPort: 3000
 backend:
   image:
-    repository: backend
+    repository: ghcr.io/vaishjp/backend
     tag: "local"
   replicas: 2
   service:
