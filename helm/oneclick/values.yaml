@@ -1,33 +1,32 @@
 frontend:
   image:
-    repository: 155734788051.dkr.ecr.ap-south-1.amazonaws.com/frontend
-    tag: "be8f86b-1"
+    repository: frontend
+    tag: "local"
   replicas: 2
   service:
-    type: LoadBalancer
+    type: ClusterIP
     port: 80
     targetPort: 3000
-
 backend:
   image:
-    repository: 155734788051.dkr.ecr.ap-south-1.amazonaws.com/backend
-    tag: "be8f86b-1"
+    repository: backend
+    tag: "local"
   replicas: 2
   service:
     type: ClusterIP
     port: 4000
   env:
     port: "4000"
-    corsOrigin: "http://a5a4920cd12a94d16b7199b7ad3c3552-114132047.ap-south-1.elb.amazonaws.com"   # e.g. http://<LB-hostname> or your domain — localhost:5173 only works locally
+    corsOrigin: "http://localhost:3000"
     jwtExpiresIn: "12h"
     allowedEmailDomains: "pesu.pes.edu,kobie.com"
     otpTtlMinutes: "10"
     pgPort: "5432"
     pgDatabase: "postgres"
-    pgSsl: "true"          # verify against your RDS instance's SSL enforcement setting
+    pgSsl: "false"
     smtpHost: "smtp.gmail.com"
     smtpPort: "587"
     smtpSecure: "false"
     smtpFrom: "vaishjp2005@gmail.com"
-    githubBranch: "main"
-    githubAlertsDir: "apps/alerting"   # matches your actual repo folder, NOT the code's default "apps/alerts"
+    githubBranch: "local-demo"
+    githubAlertsDir: "apps/alerting"

@@ -13,36 +13,31 @@ spec:
         kind: GitRepository
         name: oneclick
         namespace: flux-system
-
   install:
     remediation:
       retries: 5
-
   upgrade:
     remediation:
       retries: 5
       remediateLastFailure: true
-
   values:
     frontend:
       image:
-        repository: 155734788051.dkr.ecr.ap-south-1.amazonaws.com/frontend
-        tag: "be8f86b-1"
+        repository: frontend
+        tag: "local"
       replicas: 2
       service:
-        type: LoadBalancer
+        type: ClusterIP
         port: 80
         targetPort: 3000
-
     backend:
       image:
-        repository: 155734788051.dkr.ecr.ap-south-1.amazonaws.com/backend
-        tag: "be8f86b-1"
+        repository: backend
+        tag: "local"
       replicas: 2
       service:
         type: ClusterIP
         port: 4000
-
     database:
-      host: oneclick-postgres.c52qmcwm825v.ap-south-1.rds.amazonaws.com
+      host: postgres
       user: postgres

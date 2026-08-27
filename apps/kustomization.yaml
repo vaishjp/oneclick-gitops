@@ -5,11 +5,8 @@ resources:
   - monitoring
   - metrics-server
   - autoscaling
-  - cluster-autoscaler
   - ingress-nginx
-  - external-secrets
   - jenkins
   - jenkins-rbac
-  - ollama
   
   
