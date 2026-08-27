@@ -217,7 +217,7 @@ spec:
     persistence:
       enabled: true
       size: 8Gi
-      storageClass: gp2
+      storageClass: "local-path"
 
     serviceAccount:
       create: true
