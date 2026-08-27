@@ -1,7 +1,7 @@
 frontend:
   image:
     repository: ghcr.io/vaishjp/frontend
-    tag: "local"
+    tag: "9ae6cb0-1"
   replicas: 2
   service:
     type: ClusterIP
@@ -10,7 +10,7 @@ frontend:
 backend:
   image:
     repository: ghcr.io/vaishjp/backend
-    tag: "local"
+    tag: "9ae6cb0-1"
   replicas: 2
   service:
     type: ClusterIP
